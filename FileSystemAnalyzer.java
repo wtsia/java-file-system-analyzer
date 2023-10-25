@@ -1,10 +1,12 @@
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class FileSystemAnalyzer {
 
     public static void main(String[] args) {
         // Specify the root directory you want to analyze
-        String rootDirectory = "/path/to/your/root/directory";
+        String rootDirectory = "C:/Users/Winston/Documents/Test";
 
         // Create a File object for the root directory
         File rootDir = new File(rootDirectory);
@@ -14,6 +16,13 @@ public class FileSystemAnalyzer {
             analyzeDirectory(rootDir);
         } else {
             System.out.println("The specified root directory does not exist or is not a directory.");
+        }
+
+        if (rootDir.exists() && rootDir.isDirectory()) {
+            System.out.println("Directory Tree for: " + rootDir.getAbsolutePath());
+            DirectoryTreePrinter.printDirectoryTree(rootDir, 0);
+        } else {
+            System.out.println("The specified directory does not exist or is not a directory.");
         }
     }
 
@@ -35,5 +44,14 @@ public class FileSystemAnalyzer {
                 }
             }
         }
+    }
+
+    public static String getFileType(Path path) {
+        String fileName = path.getFileName().toString();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            return fileName.substring(dotIndex + 1);
+        }
+        return "Unknown"; // File has no extension
     }
 }
