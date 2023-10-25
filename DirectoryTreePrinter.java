@@ -1,7 +1,7 @@
 import java.io.File;
 
 public class DirectoryTreePrinter {
-
+    // Test class
     public static void main(String[] args) {
         String directoryPath = "C:/Users/Winston/Documents/Test"; // Replace with the directory path you want to print
         File directory = new File(directoryPath);
