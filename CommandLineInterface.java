@@ -5,7 +5,6 @@ public class CommandLineInterface {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        FileTypeHashtable fileTypeHashtable = new FileTypeHashtable();
 
         System.out.println("Welcome to the File System Analyzer!");
         System.out.print("Please enter directory for traversal: ");
@@ -15,6 +14,7 @@ public class CommandLineInterface {
         try {
             // Analyze system
             File rootDir = new File(name);
+
             if (rootDir.exists() && rootDir.isDirectory()) {
                 // Start the analysis from the root directory
                 FileSystemAnalyzer.analyzeDirectory(rootDir);
@@ -30,13 +30,10 @@ public class CommandLineInterface {
                 System.out.println("The specified directory does not exist or is not a directory.");
             }
 
-            // Check highest filetype
-            String fileType = "pdf";
-            fileTypeHashtable.printFileTypeDescription(fileType);
+
         } catch (Exception e) {
             System.out.println("An exception occurred: " + e.getMessage());
         }
-
         scanner.close();
     }
 }

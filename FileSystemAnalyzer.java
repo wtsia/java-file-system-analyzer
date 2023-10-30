@@ -6,20 +6,23 @@ import java.util.LinkedHashMap;
 import java.util.stream.Collectors;
 
 public class FileSystemAnalyzer {
-    private LinkedList<String> fileTypeList;
 
     public static void analyzeDirectory(File directory) { // recursively analyze directory
+        LinkedList<String> fileTypeList = new LinkedList<>();
+        FileTypeHashtable fileTypeHashtable = new FileTypeHashtable();
+
         System.out.println("Analyzing directory: " + directory.getAbsolutePath());
 
         // List the files and subdirectories in the current directory
         File[] files = directory.listFiles();
-
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
                     // It's a file; you can perform file-specific analysis here
                     System.out.println("File: " + file.getName());
                     System.out.println("Size: " + file.length() + " bytes");
+                    // Append file type
+                    fileTypeList.add(getFileType(file));
                 } else if (file.isDirectory()) {
                     // It's a subdirectory; recursively analyze it
                     analyzeDirectory(file);
@@ -60,7 +63,7 @@ public class FileSystemAnalyzer {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
-    public void printTopNFileTypes(int n) { // DEFAULT 3
+    public void printTopNFileTypes(int n) {
         Map<String, Integer> fileTypeCounts = getFileTypeCounts();
 
         if (n <= 0) {
@@ -80,9 +83,7 @@ public class FileSystemAnalyzer {
     }
 
 
-
-
-    // TESTER
+    // DRIVER FOR TESTING
     public static void main(String[] args) {
         // Specify the root directory you want to analyze
         String rootDirectory = "C:/Users/Winston/Documents/Test";

@@ -1,8 +1,8 @@
 import java.util.Hashtable;
 
 public class FileTypeHashtable {
-    private Hashtable<String, String> fileTypeDescriptions;
-    private Hashtable<String, String> fileTypeVulnerabilities;
+    private final Hashtable<String, String> fileTypeDescriptions;
+    private final Hashtable<String, String> fileTypeVulnerabilities;
 
     public FileTypeHashtable() {
         fileTypeDescriptions = new Hashtable<>();
