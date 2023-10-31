@@ -8,10 +8,13 @@ public class CommandLineInterface {
 
         System.out.println("Welcome to the File System Analyzer!");
         System.out.print("Please enter directory for traversal: ");
-        // Test input: C:/Users/Winston/Documents/Test
+        // Test input: C:/Users/winst/OneDrive/Documents/Test
         String name = scanner.nextLine();
 
         try {
+            // Init
+            FileTypeHashtable typeHashtable = new FileTypeHashtable();
+
             // Analyze system
             File rootDir = new File(name);
 
@@ -29,7 +32,6 @@ public class CommandLineInterface {
             } else {
                 System.out.println("The specified directory does not exist or is not a directory.");
             }
-
 
         } catch (Exception e) {
             System.out.println("An exception occurred: " + e.getMessage());

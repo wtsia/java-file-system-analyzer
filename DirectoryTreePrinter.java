@@ -1,19 +1,6 @@
 import java.io.File;
 
 public class DirectoryTreePrinter {
-    // Test class
-    public static void main(String[] args) {
-        String directoryPath = "C:/Users/Winston/Documents/Test"; // Replace with the directory path you want to print
-        File directory = new File(directoryPath);
-
-        if (directory.exists() && directory.isDirectory()) {
-            System.out.println("Directory Tree for: " + directory.getAbsolutePath());
-            printDirectoryTree(directory, 0);
-        } else {
-            System.out.println("The specified directory does not exist or is not a directory.");
-        }
-    }
-
     public static void printDirectoryTree(File directory, int level) {
         File[] files = directory.listFiles();
 
@@ -39,5 +26,19 @@ public class DirectoryTreePrinter {
             indentation.append("  "); // Two spaces for each level
         }
         return indentation.toString();
+    }
+
+
+    // Test
+    public static void main(String[] args) {
+        String directoryPath = "C:/Users/winst/OneDrive/Documents/Test"; // Replace with the directory path you want to print
+        File directory = new File(directoryPath);
+
+        if (directory.exists() && directory.isDirectory()) {
+            System.out.println("Directory Tree for: " + directory.getAbsolutePath());
+            printDirectoryTree(directory, 0);
+        } else {
+            System.out.println("The specified directory does not exist or is not a directory.");
+        }
     }
 }

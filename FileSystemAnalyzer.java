@@ -1,37 +1,85 @@
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.stream.Collectors;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
+
+// Recursion
+// Max Heap
+// Hash Tables
 
 public class FileSystemAnalyzer {
-
-    public static void analyzeDirectory(File directory) { // recursively analyze directory
-        LinkedList<String> fileTypeList = new LinkedList<>();
-        FileTypeHashtable fileTypeHashtable = new FileTypeHashtable();
-
+    public static void analyzeDirectory(File directory) {
         System.out.println("Analyzing directory: " + directory.getAbsolutePath());
 
         // List the files and subdirectories in the current directory
         File[] files = directory.listFiles();
+
+        // Init
+        LinkedList nameList = new LinkedList();
+
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
                     // It's a file; you can perform file-specific analysis here
                     System.out.println("File: " + file.getName());
                     System.out.println("Size: " + file.length() + " bytes");
-                    // Append file type
-                    fileTypeList.add(getFileType(file));
+                    System.out.println("Type: " + getFileType(file));
                 } else if (file.isDirectory()) {
                     // It's a subdirectory; recursively analyze it
-                    analyzeDirectory(file);
+                    nameList = recursiveAnalyzeDirectory(file, nameList);
                 }
             }
         }
+
+        System.out.println("\nLinked List Contents:");
+        nameList.iterateList();
+
+        MaxHeap maxHeap = new MaxHeap();
+        maxHeap.insertLinkedList(nameList);
+
+        FileTypeHashtable fileTypeHashtable = new FileTypeHashtable();
+
+        int topN = 3; // Specify the number of top counts to retrieve
+
+        List<MaxHeap.heapNode> topNNodes = maxHeap.searchByTopNCounts(topN);
+        if (!topNNodes.isEmpty()) {
+            System.out.println("\nTop " + topN + " Nodes with Highest Counts:");
+            for (MaxHeap.heapNode node : topNNodes) {
+                System.out.println("Type: " + node.type + ", Count: " + node.count + ", Bytes: " + node.bytes);
+                fileTypeHashtable.printFileTypeDescription(node.type);
+                System.out.println();
+            }
+        } else {
+            System.out.println("Heap is empty.");
+        }
     }
 
-    public static String getFileType(File file) {
+    public static LinkedList recursiveAnalyzeDirectory(File directory, LinkedList nameList) {
+        System.out.println("Analyzing directory: " + directory.getAbsolutePath());
+
+        // List the files and subdirectories in the current directory
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                nameList.add(file.getName(), getFileType(file), file.length());
+                if (file.isFile()) {
+                    // It's a file; you can perform file-specific analysis here
+                    System.out.println("File: " + file.getName());
+                    System.out.println("Size: " + file.length() + " bytes");
+                    System.out.println("Type: " + getFileType(file));
+                } else if (file.isDirectory()) {
+                    // It's a subdirectory; recursively analyze it
+                    nameList = recursiveAnalyzeDirectory(file, nameList);
+                }
+            }
+        }
+        return nameList;
+    }
+
+        public static String getFileType(File file) {
         String fileName = file.getName();
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex > 0) {
@@ -40,53 +88,12 @@ public class FileSystemAnalyzer {
         return "Unknown"; // File has no extension
     }
 
-    // File type analysis
-    public void FileTypeCounter() {
-        fileTypeList = new LinkedList<>();
-    }
-
-    public void addFileType(String fileType) {
-        fileTypeList.add(fileType);
-    }
-
-    public Map<String, Integer> getFileTypeCounts() {
-        Map<String, Integer> fileTypeCounts = new HashMap<>();
-
-        for (String fileType : fileTypeList) {
-            fileTypeCounts.put(fileType, fileTypeCounts.getOrDefault(fileType, 0) + 1);
-        }
-
-        // Sort the fileTypeCounts by count in descending order
-        return fileTypeCounts.entrySet()
-                .stream()
-                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-    }
-
-    public void printTopNFileTypes(int n) {
-        Map<String, Integer> fileTypeCounts = getFileTypeCounts();
-
-        if (n <= 0) {
-            System.out.println("Invalid value of 'n'.");
-            return;
-        }
-
-        System.out.println("Top " + n + " File Types:");
-        int count = 0;
-        for (Map.Entry<String, Integer> entry : fileTypeCounts.entrySet()) {
-            if (count >= n) {
-                break;
-            }
-            System.out.println(entry.getKey() + ": " + entry.getValue() + " occurrences");
-            count++;
-        }
-    }
-
-
-    // DRIVER FOR TESTING
+    // Tester: Track runtime
     public static void main(String[] args) {
         // Specify the root directory you want to analyze
-        String rootDirectory = "C:/Users/Winston/Documents/Test";
+        String rootDirectory = "C:/Users/winst/OneDrive/Documents/Test";
+
+        Instant startTime = Instant.now(); // Start time
 
         // Create a File object for the root directory
         File rootDir = new File(rootDirectory);
@@ -99,10 +106,18 @@ public class FileSystemAnalyzer {
         }
 
         if (rootDir.exists() && rootDir.isDirectory()) {
-            System.out.println("Directory Tree for: " + rootDir.getAbsolutePath());
+            System.out.println("\nDirectory Tree for: " + rootDir.getAbsolutePath());
             DirectoryTreePrinter.printDirectoryTree(rootDir, 0);
         } else {
             System.out.println("The specified directory does not exist or is not a directory.");
         }
+
+        Instant endTime = Instant.now(); // End time
+        Duration elapsedTime = Duration.between(startTime, endTime); // Elapsed time
+
+        long microSeconds = elapsedTime.toNanos() / 1_000L; // Convert nanoseconds to microseconds
+        System.out.println("Analysis completed in " + microSeconds + " microseconds.");
+
+
     }
 }

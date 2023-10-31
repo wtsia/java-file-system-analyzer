@@ -28,16 +28,24 @@ public class FileTypeHashtable {
         fileTypeDescriptions.put("py", "Python Source Code");
 
         // Populate the Hashtable with file types and vulnerabilities
-        fileTypeVulnerabilities.put("pdf", "Malicious code execution, embedded malware, data exfiltration");
-        fileTypeVulnerabilities.put("html", "Cross-Site Scripting (XSS), SQL injection");
-        fileTypeVulnerabilities.put("java", "Security vulnerabilities in code, code injection");
-        fileTypeVulnerabilities.put("json", "JSON Injection, data tampering");
-        fileTypeVulnerabilities.put("zip", "Zip bomb, malware delivery");
-        fileTypeVulnerabilities.put("xml", "XML Injection, XXE (XML External Entity) Attack");
-        fileTypeVulnerabilities.put("py", "Code injection, insecure dependencies");
-        fileTypeVulnerabilities.put("csv", "CSV Injection");
+        fileTypeVulnerabilities.put("txt", "Can be used as a carrier for malware or execute malicious scripts in specific applications.");
+        fileTypeVulnerabilities.put("jpg", "Susceptible to 'malware camouflaging' where malicious code can be embedded in image files.");
+        fileTypeVulnerabilities.put("pdf", "May contain various vulnerabilities like malicious code execution, embedded malware, and data exfiltration.");
+        fileTypeVulnerabilities.put("doc", "Can carry macro viruses and scripting vulnerabilities.");
+        fileTypeVulnerabilities.put("xls", "Similar to Word documents, Excel files can carry macro viruses and scripting vulnerabilities.");
+        fileTypeVulnerabilities.put("java", "Contains potential security vulnerabilities like code injection and insecure dependencies.");
+        fileTypeVulnerabilities.put("html", "Vulnerable to Cross-Site Scripting (XSS) and SQL injection.");
+        fileTypeVulnerabilities.put("png", "While generally considered safe, they could be used to hide malicious data within the image.");
+        fileTypeVulnerabilities.put("mp3", "Can potentially carry malware in the form of hidden executable code or embedded malware.");
+        fileTypeVulnerabilities.put("ppt", "Can carry macro viruses, scripting vulnerabilities, and potential data manipulation.");
+        fileTypeVulnerabilities.put("csv", "Prone to CSV injection attacks, especially when interpreted and processed without proper input validation.");
+        fileTypeVulnerabilities.put("json", "Susceptible to JSON injection attacks and data tampering.");
+        fileTypeVulnerabilities.put("gif", "Similar to other image formats, GIFs can carry malware or be used for hiding malicious scripts through steganography.");
+        fileTypeVulnerabilities.put("zip", "May contain threats like 'zip bomb', malware delivery, or password cracking.");
+        fileTypeVulnerabilities.put("xml", "Vulnerable to XML Injection, XXE attacks, and other web-related security issues.");
+        fileTypeVulnerabilities.put("mp4", "Susceptible to malware embedded within the file, enabling potential code execution upon opening.");
+        fileTypeVulnerabilities.put("py", "Contains security vulnerabilities like code injection and insecure dependencies if not managed securely.");
 
-        // Add more file types and vulnerabilities as needed
     }
 
     public String getFileDescription(String fileType) {
