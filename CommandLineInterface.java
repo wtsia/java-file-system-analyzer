@@ -8,7 +8,7 @@ public class CommandLineInterface {
 
         System.out.println("Welcome to the File System Analyzer!");
         System.out.print("Please enter directory for traversal: ");
-        // Test input: C:/Users/winst/OneDrive/Documents/Test
+        // Test input: C:/Users/Winston/repos/java-file-system-analyzer/scripts/Test_Files
         String name = scanner.nextLine();
 
         try {

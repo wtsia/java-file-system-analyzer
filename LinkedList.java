@@ -18,6 +18,7 @@ class LinkedList {
                 current.next = newNode;
             } else {
                 searchByType(type).count += 1;
+                searchByType(type).bytes += bytes;
             }
         }
     }

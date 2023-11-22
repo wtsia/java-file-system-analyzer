@@ -1,13 +1,12 @@
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
-// Recursion
-// Max Heap
-// Hash Tables
+// Recursion - Searching
+// Max Heap - Storing Linked List items
+// Hash Tables - Storing Lookups for Vulnerabilities
+// Linked List - Store files
 
 public class FileSystemAnalyzer {
     public static void analyzeDirectory(File directory) {
@@ -21,15 +20,7 @@ public class FileSystemAnalyzer {
 
         if (files != null) {
             for (File file : files) {
-                if (file.isFile()) {
-                    // It's a file; you can perform file-specific analysis here
-                    System.out.println("File: " + file.getName());
-                    System.out.println("Size: " + file.length() + " bytes");
-                    System.out.println("Type: " + getFileType(file));
-                } else if (file.isDirectory()) {
-                    // It's a subdirectory; recursively analyze it
-                    nameList = recursiveAnalyzeDirectory(file, nameList);
-                }
+                nameList = getLinkedList(nameList, file);
             }
         }
 
@@ -56,6 +47,19 @@ public class FileSystemAnalyzer {
         }
     }
 
+    private static LinkedList getLinkedList(LinkedList nameList, File file) {
+        if (file.isFile()) {
+            // It's a file; you can perform file-specific analysis here
+            System.out.println("File: " + file.getName());
+            System.out.println("Size: " + file.length() + " bytes");
+            System.out.println("Type: " + getFileType(file));
+        } else if (file.isDirectory()) {
+            // It's a subdirectory; recursively analyze it
+            nameList = recursiveAnalyzeDirectory(file, nameList);
+        }
+        return nameList;
+    }
+
     public static LinkedList recursiveAnalyzeDirectory(File directory, LinkedList nameList) {
         System.out.println("Analyzing directory: " + directory.getAbsolutePath());
 
@@ -65,15 +69,7 @@ public class FileSystemAnalyzer {
         if (files != null) {
             for (File file : files) {
                 nameList.add(file.getName(), getFileType(file), file.length());
-                if (file.isFile()) {
-                    // It's a file; you can perform file-specific analysis here
-                    System.out.println("File: " + file.getName());
-                    System.out.println("Size: " + file.length() + " bytes");
-                    System.out.println("Type: " + getFileType(file));
-                } else if (file.isDirectory()) {
-                    // It's a subdirectory; recursively analyze it
-                    nameList = recursiveAnalyzeDirectory(file, nameList);
-                }
+                nameList = getLinkedList(nameList, file);
             }
         }
         return nameList;
@@ -91,7 +87,7 @@ public class FileSystemAnalyzer {
     // Tester: Track runtime
     public static void main(String[] args) {
         // Specify the root directory you want to analyze
-        String rootDirectory = "C:/Users/winst/OneDrive/Documents/Test";
+        String rootDirectory = "C:/Users/Winston/repos/java-file-system-analyzer/scripts/Test_Files";
 
         Instant startTime = Instant.now(); // Start time
 
